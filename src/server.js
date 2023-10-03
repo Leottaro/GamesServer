@@ -108,7 +108,7 @@ app.get("/:gameName/getData", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    res.send("<h1>oui c'est moi</h1>");
+    res.status(200).json({ message: "oui c'est moi" });
 });
 
 if (ishttps) {
