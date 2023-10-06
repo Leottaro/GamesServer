@@ -3,6 +3,7 @@ const ishttps = process.env.ISHTTPS === "true";
 const dataPath = process.env.DATAPATH;
 const port = process.env.PORT;
 const gameList = process.env.GAMES.split(", ");
+const domain = process.env.DOMAIN;
 
 const https = require("node:https");
 const fs = require("node:fs");
@@ -56,12 +57,12 @@ app.post("/:gameName/postData", (req, res) => {
                         if (userData[key] != jsonData[userName][key])
                             throw new Error(`cannot modify ${userName}.${key} in ${dataPath + gameName + ".json"}, its a constant`);
                         break;
-                    case -1: // -1 : new value must be inferior to the actual value
-                        if (userData[key] >= jsonData[userName][key])
+                    case -1: // -1 : new value must be inferior or equal to the actual value
+                        if (userData[key] > jsonData[userName][key])
                             throw new Error(`cannot modify ${userName}.${key} in ${dataPath + gameName + ".json"} to a superior value`);
                         break;
-                    case 1: // 1 : new value must be superior to the actual value
-                        if (userData[key] <= jsonData[userName][key])
+                    case 1: // 1 : new value must be superior or equal to the actual value
+                        if (userData[key] < jsonData[userName][key])
                             throw new Error(`cannot modify ${userName}.${key} in ${dataPath + gameName + ".json"} to an inferior value`);
                         break
                     default: // else we don't care about any modification to the variable
@@ -80,7 +81,7 @@ app.post("/:gameName/postData", (req, res) => {
         }
         fs.writeFileSync(dataPath + gameName + ".json", JSON.stringify(jsonData, null, 2), "utf8");
     } catch (error) {
-        console.log("POST ERROR: \n" + error);
+        console.log("POST ERROR: \n\t" + error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
@@ -113,10 +114,10 @@ app.get("/", (req, res) => {
 
 if (ishttps) {
     https.createServer(options, app).listen(port, () => {
-        console.log(`Server is running at https://localhost:${port}/`);
+        console.log(`Server is running at https://${domain}:${port}/`);
     });
 } else {
     app.listen(port, () => {
-        console.log(`Server is running at http://localhost:${port}/`);
+        console.log(`Server is running at http://${domain}:${port}/`);
     });
 }

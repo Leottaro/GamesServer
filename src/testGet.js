@@ -2,6 +2,7 @@ require("dotenv").config();
 const ishttps = process.env.ISHTTPS === "true" ? "https" : "http";
 const port = process.env.PORT;
 const gameList = process.env.GAMES.split(", ");
+const domain = process.env.DOMAIN;
 
 async function getJSON(url) {
     try {
@@ -20,7 +21,7 @@ async function getJSON(url) {
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 gameList.forEach(game => {
-    getJSON(`${ishttps}://localhost:${port}/${game}/getData?userName=*`).then(json => {
+    getJSON(`${ishttps}://${domain}:${port}/${game}/getData?userName=*`).then(json => {
         console.log(game + " : " + JSON.stringify(json));
     });
 });
