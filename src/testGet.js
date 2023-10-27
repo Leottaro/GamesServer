@@ -1,7 +1,7 @@
 require("dotenv").config();
 const ishttps = process.env.ISHTTPS === "true" ? "https" : "http";
 const port = process.env.PORT;
-const gameList = process.env.GAMES.split(", ");
+const gameList = process.env.GAMES.split(",");
 const domain = process.env.DOMAIN;
 
 async function getJSON(url) {
