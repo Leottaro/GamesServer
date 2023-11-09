@@ -1,0 +1,27 @@
+{
+  "default": {
+    "class": "fr.leottaro.storage_lib.TestStorage",
+    "bit": null,
+    "b": null,
+    "s": null,
+    "i": null,
+    "l": null,
+    "f": null,
+    "d": null,
+    "c": null,
+    "string": null,
+    "testClass": null
+  },
+  "leoh": {
+    "class": "fr.leottaro.storage_lib.TestStorage",
+    "c": "\"",
+    "b": "127",
+    "d": "4.9E-324",
+    "f": "3.4028235E38",
+    "i": "2147483647",
+    "l": "-9223372036854775808",
+    "s": "-32768",
+    "string": "He\"l\\loW\\\"orld\\",
+    "testClass": "{\"class\":\"fr.leottaro.storage_lib.TestClass\",\"name\":\"He\\\"l\\\\loW\\\\\\\"orld\\\\\",\"x\":\"-1\",\"y\":\"1\"}"
+  }
+}

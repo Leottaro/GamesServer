@@ -24,23 +24,17 @@ gameList.forEach(function (game) {
     console.log(game, JSON.stringify(gameDataExemple[game]));
 });
 
-// data sent in the form of {"userName": username, "class": class, "data": userData}
+// data sent in the form of {"userName": username, "data": userData}
 // data stored in the form of {username: userData}
 app.post("/:gameName/postData", (req, res) => {
     try {
         const gameName = req.params.gameName;
         const userName = req.body["userName"];
-        const userClass = req.body["class"];
         const userData = req.body["data"];
 
         // Check if the userName is "default"
         if (userName == "default") {
             throw new Error(`tried to modify default database value for ${JSON.stringify(gameName)}: ${JSON.stringify(req.body)}`);
-        }
-
-        // Check if the data recieved has the right class
-        if (userClass != gameDataExemple[gameName].class) {
-            throw new Error(`Wrong class object for ${JSON.stringify(gameName)}: ${JSON.stringify(req.body)}`);
         }
 
         // Check if the gameName table exists
@@ -90,8 +84,14 @@ app.post("/:gameName/postData", (req, res) => {
                         throw new Error(`cannot modify ${userName}.${key} in ${dataPath + gameName + ".json"} to an inferior value`);
                     }
                     break
-                default:
+                case null:
                     // we don't care about any modification to the variable
+                    break;
+                default:
+                    // new value must be equal to the default value
+                    if (userData[key] != jsonData["default"][key]) {
+                        throw new Error(`cannot modify ${userName}.${key} in ${dataPath + gameName + ".json"}, it's a users constant`);
+                    }
                     break;
             }
         }
